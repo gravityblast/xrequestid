@@ -59,6 +59,7 @@ func (m *XRequestID) ServeHTTP(rw http.ResponseWriter, r *http.Request, next htt
 	id, err := m.Generate(m.Size)
 	if err == nil {
 		r.Header.Set(m.HeaderKey, id)
+		rw.Header().Set(m.HeaderKey, id)
 	}
 
 	next(rw, r)
