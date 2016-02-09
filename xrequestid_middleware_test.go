@@ -15,6 +15,10 @@ func TestXRequestID(t *testing.T) {
 	middleware.ServeHTTP(recorder, req, func(w http.ResponseWriter, r *http.Request) {})
 
 	if id := req.Header.Get("X-Request-ID"); id != "test-id" {
-		t.Fatalf("Expected X-Request-Id to be `test-id`, got `%v`", id)
+		t.Fatalf("Expected request X-Request-Id to be `test-id`, got `%v`", id)
+	}
+
+	if responseID := recorder.HeaderMap.Get("X-Request-ID"); responseID != "test-id" {
+		t.Fatalf("Expected response X-Request-Id to be `test-id`, got `%v`", responseID)
 	}
 }
