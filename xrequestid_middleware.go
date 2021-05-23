@@ -56,10 +56,14 @@ func New(n int) *XRequestID {
 }
 
 func (m *XRequestID) ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	id, err := m.Generate(m.Size)
+  requestID := r.Header.Get(m.HeaderKey)
+	err := error(nil)
+  if requestID == "" {
+    requestID, err = m.Generate(m.Size)
+  }
 	if err == nil {
-		r.Header.Set(m.HeaderKey, id)
-		rw.Header().Set(m.HeaderKey, id)
+		r.Header.Set(m.HeaderKey, requestID)
+		rw.Header().Set(m.HeaderKey, requestID)
 	}
 
 	next(rw, r)
